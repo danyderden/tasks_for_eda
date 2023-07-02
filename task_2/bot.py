@@ -1,21 +1,27 @@
-import datetime
 import os
 import logging
+import datetime
 
-from aiogram import Bot, Dispatcher, executor, types
-from task_2.sheet_api import append_message_info_to_sheet
 from dotenv import load_dotenv
+from aiogram import Bot, Dispatcher, executor, types
+
+from sheet_api import append_message_info_to_sheet
 
 load_dotenv()
-token = os.environ.get('TOKEN')
-sheet_id = os.environ.get('SHEET_ID')
-CREDENTIALS_FILE = os.environ.get('CREDENTIALS_FILE')
+TOKEN = os.getenv('TOKEN')
+SHEET_ID = os.getenv('SHEET_ID')
+CREDENTIALS_FILE = os.getenv('CREDENTIALS_FILE')
 
-bot = Bot(token=token)
+bot = Bot(token=TOKEN)
 dp = Dispatcher(bot=bot)
 
-logging.basicConfig(level=logging.ERROR, filename='log.log',
-                    format='%(asctime)s %(message)s')
+
+def setup_for_logging():
+    logging.basicConfig(level=logging.ERROR, filename='log.log',
+                        format='%(asctime)s %(message)s')
+
+
+setup_for_logging()
 
 
 @dp.message_handler()
@@ -24,10 +30,14 @@ async def write_message_info_to_google_sheet(message: types.Message):
     text = message.text
     time = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 
-    append_message_info_to_sheet(sheet_id=sheet_id,
+    append_message_info_to_sheet(sheet_id=SHEET_ID,
                                  message_info=[login, text, time],
                                  cred_file=CREDENTIALS_FILE)
 
 
-if __name__ == '__main__':
+def main():
     executor.start_polling(dp, skip_updates=True)
+
+
+if __name__ == '__main__':
+    main()
