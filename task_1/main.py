@@ -6,7 +6,7 @@ class RandomCity:
 
     def __init__(self, file_path) -> None:
         self.file_path: str = file_path
-        self.cities: dict = self._load_cities()
+        self.cities: [dict] = self._load_cities()
         self.total_population = sum(c['population'] for c in self.cities)
 
 
