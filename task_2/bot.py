@@ -24,7 +24,8 @@ async def write_message_info_to_google_sheet(message: types.Message):
     text = message.text
     time = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 
-    append_message_info_to_sheet(sheet_id=sheet_id, message_info=[login, text, time],
+    append_message_info_to_sheet(sheet_id=sheet_id,
+                                 message_info=[login, text, time],
                                  cred_file=CREDENTIALS_FILE)
 
 
