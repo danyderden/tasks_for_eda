@@ -20,11 +20,11 @@ logging.basicConfig(level=logging.ERROR, filename='log.log',
 
 @dp.message_handler()
 async def write_message_info_to_google_sheet(message: types.Message):
-    author = message.from_user.full_name
+    login = message.from_user.username
     text = message.text
     time = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 
-    append_message_info_to_sheet(sheet_id=sheet_id, message_info=[author, text, time],
+    append_message_info_to_sheet(sheet_id=sheet_id, message_info=[login, text, time],
                                  cred_file=CREDENTIALS_FILE)
 
 
